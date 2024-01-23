@@ -1,12 +1,32 @@
 const fs = require('node:fs');
 const path = require('node:path');
-const folderToCopy = path.join(__dirname, '/files');
+const sourceFolder = path.join(__dirname, '/files');
+const destinationFolder = path.join(__dirname, '/files-copy');
 
 fs.mkdir(path.join(__dirname, 'files-copy'), { recursive: true }, (error) => {
   if (error) {
-    return console.log(error);
+    return console.log(error.message);
+  } else {
+    copyDir();
   }
-  console.log('yes!');
 });
 
-console.log(__dirname);
+function copyDir() {
+  fs.readdir(sourceFolder, { withFileTypes: true }, (error, files) => {
+    if (error) {
+      return console.log(error.message);
+    } else {
+      files.forEach((file) => {
+        fs.copyFile(
+          `${sourceFolder}/${file.name}`,
+          `${destinationFolder}/${file.name}`,
+          (error) => {
+            if (error) {
+              return console.log(error.message);
+            }
+          },
+        );
+      });
+    }
+  });
+}
