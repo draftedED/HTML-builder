@@ -3,12 +3,15 @@ const path = require('node:path');
 const sourceFolder = path.join(__dirname, '/files');
 const destinationFolder = path.join(__dirname, '/files-copy');
 
-fs.mkdir(path.join(__dirname, 'files-copy'), { recursive: true }, (error) => {
-  if (error) {
-    return console.log(error.message);
-  } else {
-    copyDir();
-  }
+fs.rm(destinationFolder, { recursive: true }, (error) => {
+  if (error) {}
+  fs.mkdir(path.join(__dirname, 'files-copy'), { recursive: true }, (error) => {
+    if (error) {
+      return console.log(error.message);
+    } else {
+      copyDir();
+    }
+  });
 });
 
 function copyDir() {
